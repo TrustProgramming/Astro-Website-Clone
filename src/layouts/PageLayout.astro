@@ -1,0 +1,24 @@
+---
+import '../styles/site.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props { title: string; description?: string; overlayHeader?: boolean; }
+const { title, description = 'Thoughtful journeys, made personal. Plan a trip with Wanderwell.', overlayHeader = false } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#34483e" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+	</head>
+	<body>
+		<SiteHeader overlay={overlayHeader} />
+		<slot />
+		<SiteFooter />
+	</body>
+</html>

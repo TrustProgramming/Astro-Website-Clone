@@ -1,0 +1,11 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { photo, stories } from '../../data/travel';
+---
+<PageLayout title="Journal | Wanderwell" description="Field notes, stories, and small discoveries from the road with Wanderwell.">
+	<main class="inner-page">
+		<section class="page-hero"><div class="page-hero-image" style={`background-image:url('${photo('photo-1476514525535-07fb3b4ae5f1', 1800)}')`}></div><div class="page-hero-content"><span class="page-eyebrow">NOTES FROM THE ROAD</span><h1>Stories to take<br /><em>with you.</em></h1><p>People, places, and the little moments that make us want to keep going.</p></div></section>
+		<section class="content-wrap"><div class="content-heading"><div><span class="eyebrow">THE WANDERWELL JOURNAL</span><h2>A little inspiration for the way.</h2></div><p class="lead">Take the scenic route through our field notes and favorite finds.</p></div><div class="journal-grid">{stories.map((story) => <article class="story-card"><a href={`/journal/${story.slug}/`}><img src={photo(story.image, 850)} alt={story.title} loading="lazy" /></a><div class="story-copy"><small>{story.category} &nbsp;·&nbsp; {story.date}</small><h2><a href={`/journal/${story.slug}/`}>{story.title}</a></h2><p>{story.excerpt}</p><a class="story-link" href={`/journal/${story.slug}/`}>Read story <span>↗</span></a></div></article>)}</div></section>
+		<section class="cta-band"><div><h2>Ready to make a story of your own?</h2><p>Start with a place you’ve always wanted to see.</p></div><a class="primary-button" href="/destinations/">Explore journeys <span>↗</span></a></section>
+	</main>
+</PageLayout>

@@ -1,0 +1,38 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { destinations, photo } from '../../data/travel';
+---
+<PageLayout title="Destinations | Wanderwell" description="Explore thoughtful, locally connected journeys from alpine villages to quiet island coves.">
+	<main class="inner-page">
+		<section class="page-hero"><div class="page-hero-image" style={`background-image:url('${photo('photo-1518837695005-2083093ee35b', 1800)}')`}></div><div class="page-hero-content"><span class="page-eyebrow">GO WHERE YOU FEEL MOST ALIVE</span><h1>Places that<br /><em>stay with you.</em></h1><p>Small-group journeys, local hosts, and enough room in the day for the things you didn’t plan.</p></div></section>
+		<section class="content-wrap">
+			<div class="content-heading"><div><span class="eyebrow">THE WANDERWELL COLLECTION</span><h2>Find your kind of somewhere.</h2></div><p class="lead">Every journey is thoughtfully paced and built with people who know their home best.</p></div>
+			<form class="filter-bar" id="destination-filter" action="/destinations/" method="get"><label for="destination-select">Narrow your search <select id="destination-select" name="destination"><option value="">All places</option><option value="switzerland">Switzerland</option><option value="italy">Italy</option><option value="japan">Japan</option><option value="morocco">Morocco</option><option value="indonesia">Indonesia</option><option value="chile">Chile & Argentina</option></select></label><span class="filter-count" id="filter-count">6 considered journeys</span></form>
+			<div class="trip-grid-page" id="destination-grid">
+				{destinations.map((trip, index) => <article class="trip-card-page" data-country={trip.country.toLowerCase()}>
+					<a class="trip-photo" href={`/destinations/${trip.slug}/`} style={`background-image:url('${photo(trip.image, 950)}')`} aria-label={`Explore ${trip.name}`}><span>{trip.tag}</span></a>
+					<div class="trip-details"><small>0{index + 1} &nbsp; / &nbsp; {trip.region.toUpperCase()}</small><h3>{trip.name}</h3><p>{trip.intro}</p><div class="trip-price"><span>{trip.days} days &nbsp;·&nbsp; from <strong>${trip.price.toLocaleString()}</strong></span><a href={`/destinations/${trip.slug}/`}>Explore ↗</a></div></div>
+				</article>)}
+			</div><p class="empty-state" id="empty-state">No journeys match that destination yet. <a href="/contact/">Talk to us about a custom trip ↗</a></p>
+		</section>
+		<section class="cta-band"><div><h2>Want something made just for you?</h2><p>Tell us what you’re dreaming about. We’ll take it from there.</p></div><a class="primary-button" href="/contact/?reason=custom">Plan a custom trip <span>↗</span></a></section>
+	</main>
+	<script>
+		const selector = document.querySelector<HTMLSelectElement>('#destination-select');
+		const cards = [...document.querySelectorAll<HTMLElement>('.trip-card-page')];
+		const count = document.querySelector<HTMLElement>('#filter-count');
+		const emptyState = document.querySelector<HTMLElement>('#empty-state');
+		const countryMap: Record<string, string> = { switzerland: 'switzerland', italy: 'italy', japan: 'japan', morocco: 'morocco', indonesia: 'indonesia', chile: 'chile' };
+		const applyFilter = (value: string) => {
+			const term = countryMap[value] ?? '';
+			let visible = 0;
+			cards.forEach((card) => { const match = !term || card.dataset.country?.includes(term); card.hidden = !match; if (match) visible++; });
+			if (count) count.textContent = `${visible} ${visible === 1 ? 'considered journey' : 'considered journeys'}`;
+			emptyState?.classList.toggle('is-visible', visible === 0);
+		};
+		const initial = new URLSearchParams(window.location.search).get('destination') ?? '';
+		if (selector) selector.value = initial;
+		applyFilter(initial);
+		selector?.addEventListener('change', () => applyFilter(selector.value));
+	</script>
+</PageLayout>

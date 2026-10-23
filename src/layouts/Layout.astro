@@ -1,12 +1,22 @@
+---
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const { title = 'Wanderwell — Find your somewhere', description = 'Thoughtful journeys, made personal. Discover handpicked escapes and plan your next great adventure.' } = Astro.props;
+---
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#f6f4ef" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<title>{title}</title>
 	</head>
 	<body>
 		<slot />

@@ -1,0 +1,10 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { photo, stories } from '../../data/travel';
+
+export function getStaticPaths() { return stories.map((story) => ({ params: { slug: story.slug }, props: { story } })); }
+const { story } = Astro.props;
+---
+<PageLayout title={`${story.title} | Wanderwell Journal`} description={story.excerpt}>
+	<main class="inner-page"><article class="article"><a class="article-back" href="/journal/">← Back to the journal</a><p class="eyebrow">{story.category} &nbsp;·&nbsp; {story.date} &nbsp;·&nbsp; {story.readTime}</p><h1>{story.title}</h1><p class="lead">{story.excerpt}</p><img src={photo(story.image, 1500)} alt={story.title} /><div>{story.body.map((paragraph) => <p>{paragraph}</p>)}</div><a class="article-back" href="/journal/">More stories from the road ↗</a></article></main>
+</PageLayout>

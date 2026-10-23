@@ -1,0 +1,25 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { destinations, photo } from '../../data/travel';
+
+export function getStaticPaths() {
+	return destinations.map((trip) => ({ params: { slug: trip.slug }, props: { trip } }));
+}
+const { trip } = Astro.props;
+---
+<PageLayout title={`${trip.name} | Wanderwell`} description={trip.intro}>
+	<main class="inner-page">
+		<section class="page-hero"><div class="page-hero-image" style={`background-image:url('${photo(trip.image, 1800)}')`}></div><div class="page-hero-content"><span class="page-eyebrow">{trip.region.toUpperCase()} &nbsp;·&nbsp; {trip.country.toUpperCase()}</span><h1>{trip.name}.</h1><p>{trip.intro}</p></div></section>
+		<section class="content-wrap">
+			<div class="content-heading"><div><span class="eyebrow">A THOUGHTFUL {trip.days}-DAY JOURNEY</span><h2>A little structure.<br />Lots of room to wander.</h2></div><div class="trip-price"><span>From <strong>${trip.price.toLocaleString()}</strong> per person</span></div></div>
+			<div class="destination-facts"><div><span>BEST TIME TO GO</span><strong>{trip.bestTime}</strong></div><div><span>THE PACE</span><strong>{trip.pace}</strong></div><div><span>TRIP LENGTH</span><strong>{trip.days} days</strong></div></div>
+			<div class="itinerary"><div><span class="eyebrow">THE FLOW OF THE JOURNEY</span><h2>One day at a time.</h2><p class="lead">This is a starting point, not a schedule to follow to the minute. Your local host will help you make it your own.</p></div><ol>{trip.itinerary.map((day, index) => <li><span>DAY {String(index + 1).padStart(2, '0')}</span><p>{day}</p></li>)}</ol></div>
+			<div class="included"><h2>Thoughtfully included</h2><ul><li>Handpicked stays with character and a sense of place</li><li>Local guides and hosts who know their home</li><li>Daily breakfast and selected shared meals</li><li>In-country transfers listed in your itinerary</li><li>Our team’s support before and throughout your trip</li></ul><a class="primary-button" href={`/contact/?reason=${trip.slug}`}>Ask about this journey <span>↗</span></a></div>
+		</section>
+		<section class="cta-band"><div><h2>Could you see yourself here?</h2><p>Tell us when you’d like to go and we’ll help shape the details.</p></div><a class="primary-button" href={`/contact/?reason=${trip.slug}`}>Start planning <span>↗</span></a></section>
+	</main>
+</PageLayout>
+<style>
+	.destination-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;padding:22px;background:#fff}.destination-facts div{display:grid;gap:8px}.destination-facts span{font-size:9px;letter-spacing:.12em;color:#81877d}.destination-facts strong{font:20px Georgia,serif;font-weight:400}.itinerary{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;margin-top:75px}.itinerary h2,.included h2{font:36px Georgia,serif;font-weight:400;margin:13px 0}.itinerary ol{list-style:none;margin:0;padding:0}.itinerary li{display:grid;grid-template-columns:75px 1fr;gap:20px;border-bottom:1px solid #dedfd8;padding:17px 0}.itinerary li span{font-size:9px;letter-spacing:.1em;color:#798374;padding-top:3px}.itinerary li p{font:17px Georgia,serif;margin:0;line-height:1.5}.included{margin:75px 0 0;padding:35px;background:#e9eae3}.included ul{display:grid;grid-template-columns:1fr 1fr;gap:14px 40px;padding-left:18px;margin:25px 0 30px;color:#5f685e;font-size:12px;line-height:1.6}.included li::marker{color:#89977f}
+	@media(max-width:650px){.destination-facts{grid-template-columns:1fr;gap:18px}.itinerary{grid-template-columns:1fr;gap:22px;margin-top:50px}.included{padding:25px;margin-top:50px}.included ul{grid-template-columns:1fr}}
+</style>
